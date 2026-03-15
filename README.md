@@ -1,4 +1,4 @@
-#To run simply run the Main.java file..
+
 
 # MiniBankOS
 The goal is to simulate multiple transactions like a bank. There should be be concurrency control on the processes to keep the data consistent. All the processes should be synchronized. And incase of system failure the data shouldn't be wiped out. 
@@ -66,8 +66,8 @@ shell/
 
 logging/
     transaction logging for crash recovery
-
-#Troubleshooting:
+##To run simply run the Main.java file..
+###Troubleshooting:
 It may happen that code may be correct, but it isn't updating. (in case of logical error)
 May be since we are just compiling the Main.java.
 FOR IT TO REFLECT THE UPDATION USE COMMAND:
