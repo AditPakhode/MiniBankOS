@@ -3,7 +3,6 @@ package kernel;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
 import system.BankDatabase;
 
 public class RecoveryManager{

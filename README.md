@@ -1,81 +1,241 @@
+#  MiniBankOS
+
+A **Java-based Operating System + DBMS hybrid simulation** that models a banking system with:
+
+* Concurrent transaction execution
+* Process scheduling
+* Synchronization & locking
+* Crash recovery (WAL logging)
+* Authentication & authorization (RBAC)
+
+#  Overview
+
+MiniBankOS simulates how an operating system and database system cooperate to:
+
+* Execute multiple transactions concurrently
+* Maintain data consistency
+* Prevent race conditions
+* Recover from system crashes
+
+##  Operating System Concepts
+
+* Process scheduling (Priority + Round Robin)
+* Critical section handling
+* Process synchronization
+* Time slicing
+* Resource sharing
+
+##  Database Concepts
+
+* Transactions (Atomic execution)
+* Write-Ahead Logging (WAL)
+* Crash recovery
+* Consistency guarantees
+
+##  Security Concepts
+
+* Authentication (login/register)
+* Session management
+* Role-Based Access Control (RBAC)
+* Permission control (grant/revoke)
 
 
-# MiniBankOS
-The goal is to simulate multiple transactions like a bank. There should be be concurrency control on the processes to keep the data consistent. All the processes should be synchronized. And incase of system failure the data shouldn't be wiped out. 
+#  Features
 
-## Banking Transaction System with Concurrency Control 
-### Idea: Simulate: 
-Multiple users transferring money simultaneously 
-Prevent inconsistent balances
+##  Concurrency & Scheduling
 
-### OS Concepts: 
-Critical section problem 
-Process synchronization 
-Reader-writer problem 
-Atomic operations 
-Logging + crash recovery
+* Multi-threaded transaction execution
+* Hybrid scheduler:
 
-### Advanced Twist: 
-Simulate a system crash and implement recovery.
+  * Priority Scheduling
+  * Round Robin Queue
+* Transaction abstraction using `TransactionProcess`
 
-### Directory structure
+---
+
+##  Synchronization
+
+* LockManager (read/write locking)
+* Prevents race conditions
+* Safe concurrent access to accounts
+
+---
+
+##  Transaction System
+
+* BEGIN / COMMIT logging
+* Atomic operations
+* Scheduled execution via kernel scheduler
+
+---
+
+##  Crash Recovery
+
+* Persistent logging (`transaction.log`)
+* RecoveryManager restores system state
+* Ensures no data inconsistency after crash
+
+---
+
+##  Authentication System
+
+* User registration & login
+* Password validation
+* Session tracking
+
+---
+
+##  Authorization (RBAC)
+
+### User:
+
+* View own balance
+* Transfer from own account (if permitted)
+
+### Admin:
+
+* Create accounts
+* View any account
+* Grant / revoke transfer permissions
+* Delete users (with root protection)
+
+## Terminal Interface
+
+* Command-line interaction
+* Dynamic system behavior
+* Acts like an OS shell
+
+#  Project Structure
+
+```
 BankingOS/
 │
 ├── src/
 │   │
-│   ├── kernel/
+│   ├── kernel/                # Core OS mechanisms
 │   │   ├── TransactionManager.java
 │   │   ├── LockManager.java
-│   │   └── RecoveryManager.java
-│   │   │
+│   │   ├── RecoveryManager.java
 │   │   └── scheduler/
 │   │        ├── Scheduler.java
 │   │        ├── PriorityScheduler.java
 │   │        ├── RoundRobinQueue.java
-│   │        ├──TransactionProcess.java
-|   |        └──TimeSlice.java
+│   │        ├── TransactionProcess.java
+│   │        └── TimeSlice.java
 │   │
-│   ├── system/
+│   ├── system/                # Shared resources
 │   │   ├── Account.java
 │   │   └── BankDatabase.java
 │   │
-│   ├── shell/
+│   ├── shell/                 # CLI interface
 │   │   ├── Terminal.java
 │   │   └── CommandParser.java
 │   │
-│   ├── logging/
+│   ├── logging/              # Logging system
 │   │   └── Logger.java
+│   │
+│   ├── Auth/                 # Authentication system
+│   │   ├── AuthManager.java
+│   │   ├── Session.java
+│   │   └── User.java
 │   │
 │   └── Main.java
 │
 ├── data/
-│   └── transaction.log
+│   └── transaction.log       # Persistent WAL logs
 │
 └── README.md
+```
 
-### Each folder useCase: 
-src/
-kernel/
-    Core OS mechanisms
-    concurrency, locking, recovery
+#  Supported Commands
 
-system/
-    Shared resources (accounts database)
+##  Authentication
 
-shell/
-    Command-line interface
-
-logging/
-    transaction logging for crash recovery
-##To run simply run the Main.java file..
-###Troubleshooting:
-It may happen that code may be correct, but it isn't updating. (in case of logical error)
-May be since we are just compiling the Main.java.
-FOR IT TO REFLECT THE UPDATION USE COMMAND:
-`javac -d .. (Get-ChildItem -Recurse -Filter *.java).FullName`
-The above code compiles all the files in the directory simultaneously
+```
+register <username> <password>
+login <username> <password>
+logout
+```
 
 
+##  Banking
 
-data/
-    persistent logs
+```
+create <name> <balance>       # Admin only
+balance <name>
+transfer <from> <to> <amount>
+```
+
+
+## Admin Controls
+
+```
+grant <username>
+revoke <username>
+delete <username>
+```
+
+
+#  How to Run
+
+###  Compile All Files (IMPORTANT)
+
+```bash
+javac -d . (Get-ChildItem -Recurse -Filter *.java).FullName
+```
+
+---
+
+###  Run the System
+
+```bash
+java Main
+```
+
+---
+
+#  Troubleshooting
+
+If changes are not reflected:
+
+* You may be compiling only `Main.java`
+* Always recompile the entire project:
+
+```bash
+javac -d . (Get-ChildItem -Recurse -Filter *.java).FullName
+```
+
+---
+
+# Future Enhancements
+
+*  Persistent user storage (`users.db`)
+*  Multi-terminal support (multiple sessions)
+*  Deadlock detection (wait-for graph)
+*  Distributed BankingOS (network-based)
+*  Monitoring dashboard (process + logs)
+*  Performance optimization
+
+---
+
+#  Final Goal
+
+* Concurrency
+* Security
+* Recovery
+* Persistence
+* Multi-user environment
+
+---
+
+#  Author
+
+MiniBankOS is designed as a **systems-level project** to demonstrate deep understanding of:
+
+* Operating Systems
+* Database Systems
+* Concurrency & Synchronization
+
+---
+
+ *This is not just a project — it's a simulation of how real systems work internally.*
